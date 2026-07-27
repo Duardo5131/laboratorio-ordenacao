@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratório de Ordenação</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-mark"></span>Laboratório de Ordenação</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="sobre.html">O que é Ordenação</a></li>
+      <li><a href="algoritmos.html">Tipos de Algoritmos</a></li>
+      <li><a href="laboratorio.html">Laboratório</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Abrir menu">☰</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero container">
+    <span class="eyebrow">● ensino visual de algoritmos</span>
+    <h1>Veja os números encontrarem seu lugar — passo a passo.</h1>
+    <p class="lead">Um laboratório interativo para aprender como os computadores colocam listas em ordem: com animações, comparações em tempo real e explicações pensadas para quem está começando agora.</p>
+  </section>
+
+  <section class="container">
+    <div class="card-grid">
+      <a href="sobre.html" class="choice-card" data-tag="01 · conceito">
+        <div class="icon-tile tile-1">📘</div>
+        <h3>O que é Ordenação</h3>
+        <p>Entenda o que é um algoritmo de ordenação, para que ele serve e por que ele está por trás de tanta coisa no dia a dia.</p>
+        <span class="go">Começar a entender →</span>
+      </a>
+      <a href="algoritmos.html" class="choice-card" data-tag="02 · catálogo">
+        <div class="icon-tile tile-2">🧠</div>
+        <h3>Tipos de Algoritmos</h3>
+        <p>Conheça Bubble, Selection, Insertion, Merge, Quick, Heap e Shell Sort — cada um com sua lógica, vantagens e código.</p>
+        <span class="go">Explorar algoritmos →</span>
+      </a>
+      <a href="laboratorio.html" class="choice-card" data-tag="03 · prática">
+        <div class="icon-tile tile-3">🧪</div>
+        <h3>Laboratório</h3>
+        <p>Digite sua própria lista, escolha o algoritmo e execute passo a passo, comparando estatísticas em tempo real.</p>
+        <span class="go">Ir para o laboratório →</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="panel">
+      <h2 style="margin-bottom:.2em">Uma lista desordenada vira uma lista ordenada</h2>
+      <p style="margin-bottom:24px; text-align:center">É exatamente esse movimento que você vai aprender a enxergar por dentro.</p>
+      <div class="compare-row">
+        <div>
+          <div class="list-illustration" id="home-before"></div>
+        </div>
+        <div class="arrow">→</div>
+        <div>
+          <div class="list-illustration sorted" id="home-after"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">Laboratório de Ordenação — material didático interativo para o Ensino Médio.</footer>
+
+<script src="js/main.js"></script>
+<script>
+  const homeData = [8,3,5,1,9];
+  const sortedData = [...homeData].sort((a,b)=>a-b);
+  const maxV = Math.max(...homeData);
+  function fillBars(id, arr, color){
+    const el = document.getElementById(id);
+    el.innerHTML = arr.map(v => `<div class="bar-wrap"><div class="bar" style="height:${20+ (v/maxV)*80}px; background:${color}"></div><div class="bar-label">${v}</div></div>`).join('');
+  }
+  fillBars('home-before', homeData, 'var(--bar-compare)');
+  fillBars('home-after', sortedData, 'var(--bar-sorted)');
+</script>
+</body>
+</html>
