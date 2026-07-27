@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipos de Algoritmos · Laboratório de Ordenação</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-mark"></span>Laboratório de Ordenação</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="sobre.html">O que é Ordenação</a></li>
+      <li><a href="algoritmos.html">Tipos de Algoritmos</a></li>
+      <li><a href="laboratorio.html">Laboratório</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Abrir menu">☰</button>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:0">
+    <span class="eyebrow">02 · catálogo</span>
+    <h1>Escolha um algoritmo para explorar</h1>
+    <p class="lead">Cada card leva para uma página completa: explicação, animação passo a passo, código comentado, complexidade e quando usar.</p>
+  </section>
+
+  <section class="algo-grid" id="algo-grid"></section>
+</main>
+
+<footer class="site-footer">Laboratório de Ordenação — material didático interativo para o Ensino Médio.</footer>
+
+<script src="js/main.js"></script>
+<script src="js/algorithms.js"></script>
+<script>
+  const grid = document.getElementById('algo-grid');
+  grid.innerHTML = Object.values(ALGO_META).map(a => `
+    <a class="algo-card" href="algoritmo.html?a=${a.id}">
+      <span class="tag">${a.tagline}</span>
+      <h3>${a.name}</h3>
+      <p style="font-size:.88rem; margin:0">${a.short}</p>
+      <div class="mini-bars">${a.mini.map(h=>`<span style="height:${h}%"></span>`).join('')}</div>
+    </a>
+  `).join('');
+</script>
+</body>
+</html>

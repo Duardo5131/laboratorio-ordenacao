@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratório · Laboratório de Ordenação</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-mark"></span>Laboratório de Ordenação</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="sobre.html">O que é Ordenação</a></li>
+      <li><a href="algoritmos.html">Tipos de Algoritmos</a></li>
+      <li><a href="laboratorio.html">Laboratório</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Abrir menu">☰</button>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:0">
+    <span class="eyebrow">03 · prática</span>
+    <h1>Laboratório de Ordenação</h1>
+    <p class="lead">Escolha um algoritmo, monte sua lista e execute passo a passo — ou compare vários algoritmos ao mesmo tempo.</p>
+  </section>
+
+  <section class="section">
+    <div class="lab-toolbar">
+      <div class="field grow">
+        <label>Escolha o algoritmo</label>
+        <div class="algo-picker" id="algo-picker"></div>
+      </div>
+
+      <div class="field">
+        <label class="checkbox-field">
+          <input type="checkbox" id="compare-mode-toggle"> Modo Comparação
+        </label>
+      </div>
+    </div>
+
+    <div class="lab-toolbar">
+      <div class="field grow">
+        <label>Lista de números (separados por vírgula)</label>
+        <input type="text" id="list-input" placeholder="8,5,2,1,9,6">
+      </div>
+      <div class="field">
+        <label>Qtd. elementos</label>
+        <input type="number" class="mini-num" id="rand-qty" value="8" min="3" max="30">
+      </div>
+      <div class="field">
+        <label>Valor mínimo</label>
+        <input type="number" class="mini-num" id="rand-min" value="1" min="0" max="998">
+      </div>
+      <div class="field">
+        <label>Valor máximo</label>
+        <input type="number" class="mini-num" id="rand-max" value="99" min="1" max="999">
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button class="btn btn-ghost" id="rand-btn">🎲 Gerar Lista Aleatória</button>
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button class="btn btn-primary" id="apply-list-btn">Usar esta lista</button>
+      </div>
+    </div>
+
+    <div class="lab-toolbar">
+      <div class="field">
+        <label>&nbsp;</label>
+        <div style="display:flex; gap:8px; flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" id="play-btn">▶ Executar</button>
+          <button class="btn btn-ghost btn-sm" id="pause-btn">⏸ Pausar</button>
+          <button class="btn btn-ghost btn-sm" id="prev-btn">⏮ Passo anterior</button>
+          <button class="btn btn-ghost btn-sm" id="next-btn">Próximo passo ⏭</button>
+          <button class="btn btn-ghost btn-sm" id="reset-btn">↺ Reiniciar</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Velocidade</label>
+        <div class="speed-slider">
+          <span style="font-size:.8rem">Lento</span>
+          <input type="range" id="speed-slider" min="1" max="3" value="2" step="1">
+          <span style="font-size:.8rem">Rápido</span>
+        </div>
+      </div>
+      <div class="field">
+        <label class="checkbox-field">
+          <input type="checkbox" id="explain-mode-toggle"> Modo Explicação
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------- MODO INDIVIDUAL ---------------- -->
+  <section class="section" id="single-mode">
+    <div class="lab-main">
+      <div class="viz-panel">
+        <div class="viz-bars" id="viz-bars"></div>
+        <div class="viz-message" id="viz-message">Monte uma lista e clique em "Executar" para começar.</div>
+        <div class="viz-controls">
+          <span class="badge badge-outline" id="viz-algo-name">Bubble Sort</span>
+        </div>
+      </div>
+
+      <div class="side-stack">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="val" id="stat-comparisons">0</div><div class="lbl">Comparações</div></div>
+          <div class="stat-box"><div class="val" id="stat-swaps">0</div><div class="lbl">Trocas</div></div>
+          <div class="stat-box"><div class="val" id="stat-steps">0</div><div class="lbl">Passos</div></div>
+          <div class="stat-box"><div class="val" id="stat-time">0 ms</div><div class="lbl">Tempo estimado</div></div>
+        </div>
+
+        <div class="panel" id="explain-panel" style="display:none">
+          <div class="explain-toggle">
+            <strong class="panel-label" style="margin-bottom:0">Explicação em linguagem simples</strong>
+          </div>
+          <div class="explain-box" id="explain-box">Ative o Modo Explicação e execute um passo para ver a explicação aqui.</div>
+        </div>
+
+        <div class="panel">
+          <strong class="panel-label" style="margin-bottom:0">Código sincronizado</strong>
+          <div class="code-block" style="margin-top:10px">
+            <div class="code-lines" id="lab-code-lines"></div>
+          </div>
+          <div class="code-explain" id="lab-code-explain" style="margin-top:10px">A linha em execução aparece destacada automaticamente.</div>
+        </div>
+
+        <div class="panel" id="complexity-final" style="display:none">
+          <strong class="panel-label" style="margin-bottom:0">Complexidade teórica deste algoritmo</strong>
+          <div class="complexity-grid" id="final-complexity-grid" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------- MODO COMPARAÇÃO ---------------- -->
+  <section class="section" id="compare-mode-section" style="display:none">
+    <div class="panel" style="margin-bottom:16px">
+      <label class="panel-label" style="margin-bottom:0">Selecione os algoritmos a comparar</label>
+      <div class="algo-picker" id="compare-picker" style="margin-top:10px"></div>
+    </div>
+    <div class="compare-grid" id="compare-grid"></div>
+    <div class="panel" id="compare-results" style="display:none">
+      <h3 style="margin-bottom:14px">Resultado da comparação</h3>
+      <table class="compare-table" id="compare-table">
+        <thead><tr><th>Algoritmo</th><th>Comparações</th><th>Trocas</th><th>Passos</th><th>Tempo estimado</th></tr></thead>
+        <tbody id="compare-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><span class="num">— quiz</span><h2 style="margin:0">Teste o que você aprendeu</h2></div>
+    <div id="quiz-container"></div>
+  </section>
+</main>
+
+<footer class="site-footer">Laboratório de Ordenação — material didático interativo para o Ensino Médio.</footer>
+
+<script src="js/main.js"></script>
+<script src="js/algorithms.js"></script>
+<script src="js/lab.js"></script>
+</body>
+</html>
