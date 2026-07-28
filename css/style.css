@@ -178,6 +178,16 @@ h2 { font-size: 1.8rem; }
   box-shadow: 5px 5px 0px var(--border-color);
 }
 
+/* Painéis e seções que aparecem/desaparecem dinamicamente no laboratório
+   (explicação, complexidade final, modo comparação, resultado da comparação) */
+#explain-panel,
+#complexity-final,
+#compare-results,
+#single-mode,
+#compare-mode-section {
+  animation: fadeSlideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
 /* Grid de Duas Colunas */
 .two-col {
   display: grid;
@@ -380,7 +390,31 @@ h2 { font-size: 1.8rem; }
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  animation: barPopIn 0.2s ease-out backwards;
 }
+
+@keyframes barPopIn {
+  from {
+    opacity: 0.4;
+    transform: scaleY(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.bar-wrap:nth-child(2) { animation-delay: 0.012s; }
+.bar-wrap:nth-child(3) { animation-delay: 0.024s; }
+.bar-wrap:nth-child(4) { animation-delay: 0.036s; }
+.bar-wrap:nth-child(5) { animation-delay: 0.048s; }
+.bar-wrap:nth-child(6) { animation-delay: 0.06s; }
+.bar-wrap:nth-child(7) { animation-delay: 0.072s; }
+.bar-wrap:nth-child(8) { animation-delay: 0.084s; }
+.bar-wrap:nth-child(9) { animation-delay: 0.096s; }
+.bar-wrap:nth-child(10) { animation-delay: 0.108s; }
+.bar-wrap:nth-child(11) { animation-delay: 0.12s; }
+.bar-wrap:nth-child(12) { animation-delay: 0.132s; }
 
 .bar-label {
   font-family: 'Fredoka', sans-serif;
@@ -482,6 +516,18 @@ h2 { font-size: 1.8rem; }
 
 .tab-pane.active {
   display: block;
+  animation: fadeSlideIn 0.32s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Catálogo de Algoritmos (.algo-grid) */

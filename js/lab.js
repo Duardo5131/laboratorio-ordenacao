@@ -42,7 +42,7 @@
     for(let k=0;k<=uptoIndex;k++){
       const e = steps[k].event;
       if(e.type==='sorted' && e.indices) e.indices.forEach(i=>set.add(i));
-      if(e.sortedAll) steps[k].array.forEach((_,i)=>set.add(i));
+      if(steps[k].sortedAll) steps[k].array.forEach((_,i)=>set.add(i));
     }
     return set;
   }
@@ -57,20 +57,23 @@
     return { comparisons, swaps, steps: uptoIndex+1 };
   }
 
+  // Reaproveita as barras já existentes (em vez de recriar tudo a cada passo):
+  // permite que a transição de altura/cor do CSS anime de verdade entre passos.
   function renderBars(container, step, sortedSet, opts){
     opts = opts || {};
-    const max = Math.max(...step.array, 1);
-    const ev = step.event;
-    container.innerHTML = step.array.map((v,i)=>{
-      let cls = 'bar';
-      if(sortedSet.has(i)) cls += ' sorted';
-      else if(ev.type==='compare' && (i===ev.i || i===ev.j)) cls += ' compare';
-      else if(ev.type==='swap' && (i===ev.i || i===ev.j)) cls += ' swap';
-      else if(ev.type==='overwrite' && i===ev.i) cls += ' swap';
-      const h = 12 + (v/max) * (opts.height || 200);
-      const label = opts.showVal === false ? '' : `<div class="bar-label">${v}</div>`;
-      return `<div class="bar-wrap"><div class="${cls}" style="height:${h}px"></div>${label}</div>`;
-    }).join('');
+    const { array } = step, max = Math.max(...array, 1), ev = step.event, showVal = opts.showVal !== false;
+    if(container.children.length !== array.length){
+      container.innerHTML = array.map(() => `<div class="bar-wrap"><div class="bar"></div>${showVal ? '<div class="bar-label"></div>' : ''}</div>`).join('');
+    }
+    array.forEach((v,i) => {
+      const [bar, label] = container.children[i].children;
+      bar.className = sortedSet.has(i) ? 'bar sorted'
+        : (ev.type==='compare' && (i===ev.i||i===ev.j)) ? 'bar compare'
+        : (ev.type==='swap' && (i===ev.i||i===ev.j)) || (ev.type==='overwrite' && i===ev.i) ? 'bar swap'
+        : 'bar';
+      bar.style.height = (12 + (v/max) * (opts.height || 200)) + 'px';
+      if(showVal) label.textContent = v;
+    });
   }
 
   function buildExplanation(algo, ev){

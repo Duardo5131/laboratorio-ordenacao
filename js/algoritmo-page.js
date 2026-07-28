@@ -83,30 +83,33 @@
   buildSteps();
 
   function renderStep(){
-    const s = steps[Math.max(stepIndex,0)] || steps[0];
+    const idx = Math.max(stepIndex,0);
+    const s = steps[idx] || steps[0];
     const max = Math.max(...s.array);
     const ev = s.event;
-    const sortedSet = new Set();
-    // recompute sorted accumulation up to current index
-    let acc = new Set();
-    for(let k=0;k<=Math.max(stepIndex,0);k++){
+    const acc = new Set();
+    for(let k=0;k<=idx;k++){
       const e = steps[k].event;
       if(e.type==='sorted' && e.indices) e.indices.forEach(i=>acc.add(i));
-      if(e.sortedAll) s.array.forEach((_,i)=>acc.add(i));
+      if(steps[k].sortedAll) steps[k].array.forEach((_,i)=>acc.add(i));
     }
-    if(steps[Math.max(stepIndex,0)].sortedAll) s.array.forEach((_,i)=>acc.add(i));
 
-    stage.innerHTML = s.array.map((v,i) => {
-      let cls = 'bar';
-      if(acc.has(i)) cls += ' sorted';
-      else if(ev.type==='compare' && (i===ev.i || i===ev.j)) cls += ' compare';
-      else if((ev.type==='swap') && (i===ev.i || i===ev.j)) cls += ' swap';
-      else if(ev.type==='overwrite' && i===ev.i) cls += ' swap';
-      return `<div class="bar-wrap"><div class="${cls}" style="height:${20+(v/max)*130}px"></div><div class="bar-label">${v}</div></div>`;
-    }).join('');
+    if(stage.children.length !== s.array.length){
+      stage.innerHTML = s.array.map(() => '<div class="bar-wrap"><div class="bar"></div><div class="bar-label"></div></div>').join('');
+    }
+    s.array.forEach((v,i) => {
+      const [bar, label] = stage.children[i].children;
+      bar.className = acc.has(i) ? 'bar sorted'
+        : (ev.type==='compare' && (i===ev.i||i===ev.j)) ? 'bar compare'
+        : (ev.type==='swap' && (i===ev.i||i===ev.j)) || (ev.type==='overwrite' && i===ev.i) ? 'bar swap'
+        : 'bar';
+      bar.style.height = (20 + (v/max)*130) + 'px';
+      label.textContent = v;
+    });
     caption.textContent = ev.message || '—';
     if(ev.line!==undefined) selectLine(ev.line, false);
   }
+
 
   function step(dir){
     stepIndex = Math.max(0, Math.min(steps.length-1, stepIndex + dir));
