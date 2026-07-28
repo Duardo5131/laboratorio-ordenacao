@@ -20,7 +20,7 @@ Site educacional interativo para ensinar **algoritmos de ordenação** no Ensino
  **Modo de comparação** — executa dois ou mais algoritmos lado a lado sobre a mesma lista, para comparar desempenho diretamente
  **Quiz interativo** — perguntas e alternativas embaralhadas a cada tentativa, com pontuação e opção de refazer
 
-## 🛠️Tecnologias
+## Tecnologias
 
 Site 100% estático, sem frameworks, sem build e sem dependências externas:
 
