@@ -184,13 +184,19 @@
   }
   function playSingle(){
     if(!single || single.index >= single.steps.length-1) return;
+    if(singlePlaying) return;          // já está executando: ignora cliques repetidos
+    clearInterval(singleTimer);        // garantia extra contra timers órfãos
     singlePlaying = true;
     singleTimer = setInterval(()=>{
       stepSingle(1);
       if(single.index >= single.steps.length-1) stopSinglePlaying();
     }, speedMs());
   }
-  function stopSinglePlaying(){ singlePlaying = false; clearInterval(singleTimer); }
+  function stopSinglePlaying(){
+    singlePlaying = false;
+    clearInterval(singleTimer);
+    singleTimer = null;
+  }
   function onSingleAlgoChange(){
     renderCodeLines(ALGO_META[state.singleAlgo]);
     stopSinglePlaying();
@@ -232,6 +238,8 @@
   }
   function playCompare(){
     if(compareRunners.every(r=>r.index >= r.steps.length-1)) return;
+    if(comparePlaying) return;         // já está executando: ignora cliques repetidos
+    clearInterval(compareTimer);
     comparePlaying = true;
     compareTimer = setInterval(()=>{
       let moved = false;
@@ -241,7 +249,11 @@
       if(!moved){ stopComparePlaying(); showCompareResults(); }
     }, speedMs());
   }
-  function stopComparePlaying(){ comparePlaying = false; clearInterval(compareTimer); }
+  function stopComparePlaying(){
+    comparePlaying = false;
+    clearInterval(compareTimer);
+    compareTimer = null;
+  }
   function showCompareResults(){
     const tbody = document.getElementById('compare-table-body');
     tbody.innerHTML = compareRunners.map(r=>{
@@ -274,6 +286,12 @@
     const arr = parseListInput(document.getElementById('list-input').value);
     if(arr.length < 2){ alert('Digite pelo menos 2 números separados por vírgula, por exemplo: 8,5,2,1,9,6'); return; }
     applyCurrentList(arr);
+  });
+
+  // Mudar a velocidade durante a execução reinicia o timer com o novo intervalo
+  document.getElementById('speed-slider').addEventListener('input', ()=>{
+    if(!state.compareMode && singlePlaying){ stopSinglePlaying(); playSingle(); }
+    else if(state.compareMode && comparePlaying){ stopComparePlaying(); playCompare(); }
   });
 
   document.getElementById('play-btn').addEventListener('click', ()=> state.compareMode ? playCompare() : playSingle());
